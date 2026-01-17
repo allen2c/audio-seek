@@ -70,13 +70,13 @@ class TestFormatSelection:
             assert "compatibility" in str(w[0].message).lower()
 
     def test_seekability_testing(self):
-        """Test that _test_seekability correctly identifies seekable formats."""
+        """Test that test_seekability correctly identifies seekable formats."""
         # Test known seekable format
-        is_seekable = AudioSeek._test_seekability("IMA_ADPCM")
+        is_seekable = AudioSeek.test_seekability("IMA_ADPCM")
         assert is_seekable is True
 
         # Test non-existent format (should return False)
-        is_seekable = AudioSeek._test_seekability("NONEXISTENT_FORMAT_12345")
+        is_seekable = AudioSeek.test_seekability("NONEXISTENT_FORMAT_12345")
         assert is_seekable is False
 
     def test_subtype_info_structure(self):

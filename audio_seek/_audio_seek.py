@@ -166,7 +166,7 @@ class AudioSeek:
         return output_path
 
     @staticmethod
-    def _test_seekability(subtype: str, sample_rate: int = 16000) -> bool:
+    def test_seekability(subtype: str, sample_rate: int = 16000) -> bool:
         """
         Tests if a WAV subtype supports O(1) seek operations.
 
@@ -239,7 +239,7 @@ class AudioSeek:
                 continue
 
             # Test if this format supports seek
-            is_seekable = AudioSeek._test_seekability(candidate)
+            is_seekable = AudioSeek.test_seekability(candidate)
 
             if is_seekable:
                 selected_info = SubtypeInfo(
@@ -262,7 +262,7 @@ class AudioSeek:
             fallback_candidates = ["IMA_ADPCM", "MS_ADPCM"]
 
             for fallback in fallback_candidates:
-                if fallback in available and AudioSeek._test_seekability(fallback):
+                if fallback in available and AudioSeek.test_seekability(fallback):
                     selected_info = SubtypeInfo(
                         subtype=fallback,
                         seekable=True,
