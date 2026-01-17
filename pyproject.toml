@@ -7,20 +7,20 @@ dependencies = [
   "numpy",
   "soundfile",
 ]
-description = "Efficient, random-access reader for G.726 ADPCM encoded WAV files with O(1) seeking complexity."
+description = "Efficient audio seeking library with O(1) complexity. Automatically selects best seekable compression format for maximum compatibility."
 license = { text = "MIT" }
-name = "ac-py-template"
+name = "audio-seek"
 readme = "README.md"
 requires-python = ">=3.11,<4"
 version = "0.1.0"
 
 [project.urls]
-Homepage = "https://github.com/allen2c/g726-seek"
-"PyPI" = "https://pypi.org/project/g726-seek/"
-Repository = "https://github.com/allen2c/g726-seek"
+Homepage = "https://github.com/allen2c/audio-seek"
+"PyPI" = "https://pypi.org/project/audio-seek/"
+Repository = "https://github.com/allen2c/audio-seek"
 
 [tool.poetry]
-packages = [{ include = "g726_seek" }]
+packages = [{ include = "audio_seek" }]
 
 [tool.poetry.extras]
 all = []
