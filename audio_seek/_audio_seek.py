@@ -53,6 +53,31 @@ class AudioSeek:
         return read_audio_segment(file_path, start_sec, duration_sec)
 
     @staticmethod
+    def read_segment_to_file(
+        file_path: Path | str,
+        start_sec: float,
+        duration_sec: float,
+        output_path: Path | str,
+    ) -> Path:
+        """
+        Reads audio segment and saves to PCM WAV (16-bit).
+        For compressed formats, use read_segment() + write() instead.
+        """
+        from audio_seek.read_audio_segment import read_audio_segment
+
+        # Read audio segment data
+        data = read_audio_segment(file_path, start_sec, duration_sec)
+
+        # Get sample rate from source file
+        with sf.SoundFile(file_path) as f:
+            sample_rate: int = f.samplerate
+
+        # Save to PCM_16 WAV (uncompressed, universally compatible)
+        sf.write(output_path, data, sample_rate, format="WAV", subtype="PCM_16")
+
+        return Path(output_path)
+
+    @staticmethod
     def write(
         file_path: Path | str,
         data: np.ndarray,
