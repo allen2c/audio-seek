@@ -38,6 +38,7 @@ pytest-xdist = "*"
 rich = "*"
 rich-color-support = "*"
 setuptools = "*"
+tqdm = "*"
 twine = "*"
 
 [tool.isort]
