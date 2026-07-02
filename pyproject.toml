@@ -1,18 +1,12 @@
 [project]
 authors = [{ name = "Allen Chou", email = "f1470891079@gmail.com" }]
-dependencies = [
-  "librosa",
-  "llvmlite (>=0.43.0,<1.0.0)",
-  "numba (>=0.60.0,<1.0.0)",
-  "numpy",
-  "soundfile",
-]
-description = "Efficient audio seeking library with O(1) complexity. Automatically selects best seekable compression format for maximum compatibility."
+dependencies = ["numpy", "soundfile"]
+description = "Lightweight audio seeking across common formats: O(1) for uncompressed PCM (WAV/AIFF), best-effort frame-level seek for compressed formats (MP3/FLAC/OGG)."
 license = { text = "MIT" }
 name = "audio-seek"
 readme = "README.md"
 requires-python = ">=3.11,<4"
-version = "0.1.0"
+version = "0.2.0"
 
 [project.urls]
 Homepage = "https://github.com/allen2c/audio-seek"
