@@ -2,7 +2,7 @@
 authors = [{ name = "Allen Chou", email = "f1470891079@gmail.com" }]
 dependencies = ["numpy", "soundfile"]
 description = "Lightweight audio seeking across common formats: O(1) for uncompressed PCM (WAV/AIFF), best-effort frame-level seek for compressed formats (MP3/FLAC/OGG)."
-license = { text = "MIT" }
+license = { text = "Apache-2.0" }
 name = "audio-seek"
 readme = "README.md"
 requires-python = ">=3.11,<4"
