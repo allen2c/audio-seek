@@ -118,3 +118,85 @@ class TestAudioSeek:
         assert result_path.stat().st_size > 0
         # The converted output is PCM, so seeking into it is now O(1).
         assert AudioSeek.seek_complexity(result_path) == "O(1)"
+
+    def test_read_segment_to_file_infers_format_from_extension(
+        self, test_wav_file: Path, tmp_path: Path
+    ) -> None:
+        """Without format=, the container is inferred from output_path's suffix."""
+        output_path = tmp_path / "segment.flac"
+
+        result_path = AudioSeek.read_segment_to_file(
+            test_wav_file, 0.0, 0.2, output_path=output_path
+        )
+
+        with sf.SoundFile(result_path) as f:
+            assert f.format == "FLAC"
+
+    def test_read_segment_to_file_explicit_format_overrides_extension(
+        self, test_wav_file: Path, tmp_path: Path
+    ) -> None:
+        """format= takes precedence over output_path's extension."""
+        output_path = tmp_path / "segment.wav"
+
+        result_path = AudioSeek.read_segment_to_file(
+            test_wav_file, 0.0, 0.2, output_path=output_path, format="AIFF"
+        )
+
+        with sf.SoundFile(result_path) as f:
+            assert f.format == "AIFF"
+
+    def test_read_segment_to_file_explicit_subtype(
+        self, test_wav_file: Path, tmp_path: Path
+    ) -> None:
+        """subtype= controls the bit-depth/encoding metadata."""
+        output_path = tmp_path / "segment_24bit.wav"
+
+        result_path = AudioSeek.read_segment_to_file(
+            test_wav_file, 0.0, 0.2, output_path=output_path, subtype="PCM_24"
+        )
+
+        with sf.SoundFile(result_path) as f:
+            assert f.subtype == "PCM_24"
+
+    def test_read_segment_to_file_invalid_subtype_raises(
+        self, test_wav_file: Path, tmp_path: Path
+    ) -> None:
+        """An unsupported format/subtype combo raises ValueError up front."""
+        output_path = tmp_path / "segment.ogg"
+
+        with pytest.raises(ValueError):
+            AudioSeek.read_segment_to_file(
+                test_wav_file, 0.0, 0.2, output_path=output_path, subtype="PCM_16"
+            )
+
+    def test_read_segment_to_file_invalid_format_raises(
+        self, test_wav_file: Path, tmp_path: Path
+    ) -> None:
+        """An unrecognized format raises ValueError up front."""
+        output_path = tmp_path / "segment.out"
+
+        with pytest.raises(ValueError):
+            AudioSeek.read_segment_to_file(
+                test_wav_file, 0.0, 0.2, output_path=output_path, format="NOTAFORMAT"
+            )
+
+    def test_read_segment_to_file_resamples_when_sample_rate_given(
+        self, test_wav_file: Path, tmp_path: Path
+    ) -> None:
+        """sample_rate= resamples the segment instead of just relabeling it."""
+        output_path = tmp_path / "segment_8k.wav"
+        duration_sec = 0.2
+        target_sample_rate = 8000
+
+        result_path = AudioSeek.read_segment_to_file(
+            test_wav_file,
+            0.0,
+            duration_sec,
+            output_path=output_path,
+            sample_rate=target_sample_rate,
+        )
+
+        with sf.SoundFile(result_path) as f:
+            assert f.samplerate == target_sample_rate
+            expected_frames = int(round(duration_sec * target_sample_rate))
+            assert abs(f.frames - expected_frames) <= 1
