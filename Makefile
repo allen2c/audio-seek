@@ -1,31 +1,14 @@
 # Development
-format:
-	@isort . \
-		--skip setup.py \
-		--skip .venv \
-		--skip build \
-		--skip dist \
-		--skip __pycache__ \
-		--skip docs \
-		--skip static \
-		--skip .conda
-	@black . \
-		--exclude setup.py \
-		--exclude .venv \
-		--exclude build \
-		--exclude dist \
-		--exclude __pycache__ \
-		--exclude docs \
-		--exclude static \
-		--exclude .conda
+fmt:
+	@isort audio_seek tests
+	@black audio_seek tests
+	@ruff check --fix audio_seek tests
 
 install:
 	poetry install --all-extras --all-groups
 
 update:
 	poetry update
-	poetry export --without-hashes -f requirements.txt --output requirements.txt
-	poetry export --without-hashes -f requirements.txt --output requirements-all.txt --all-extras --all-groups
 
 # Docs
 mkdocs:

@@ -8,7 +8,7 @@ def read_audio_segment(
     file_path: Path | str, start_sec: float, duration_sec: float
 ) -> np.ndarray:
     """
-    General reader: supports PCM WAV, G.726 WAV (32k/48k/64k...), FLAC, etc.
+    General reader: supports WAV, AIFF, FLAC, OGG/Vorbis, and MP3.
     If the soundfile library recognizes the header, it can seek accurately.
     """
     try:
