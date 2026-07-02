@@ -22,31 +22,33 @@ Repository = "https://github.com/allen2c/audio-seek"
 [tool.poetry]
 packages = [{ include = "audio_seek" }]
 
-[tool.poetry.extras]
-all = []
-
-[tool.poetry.group.dev.dependencies]
-black = { extras = ["jupyter"], version = "*" }
-codepress = "*"
-isort = "*"
-poetry-plugin-export = "*"
-pytest = "*"
-pytest-asyncio = "*"
-pytest-cov = "*"
-pytest-env = "*"
-pytest-xdist = "*"
-rich = "*"
-rich-color-support = "*"
-setuptools = "*"
-tqdm = "*"
-twine = "*"
+[dependency-groups]
+dev = [
+  "black[jupyter]",
+  "isort",
+  "mkdocs-material",
+  "poetry-plugin-export",
+  "pytest",
+  "pytest-asyncio",
+  "pytest-cov",
+  "pytest-env",
+  "pytest-xdist",
+  "rich",
+  "rich-color-support",
+  "ruff",
+  "setuptools",
+  "twine",
+]
 
 [tool.isort]
 profile = "black"
 
-[tool.flake8]
-ignore = ["E203", "E704", "W503"]
-max-line-length = 88
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+
+[tool.ruff.lint]
+ignore = ["E203"]
 
 [tool.pytest.ini_options]
 env = ["ENVIRONMENT=test", "PYTEST_IS_RUNNING=true"]
